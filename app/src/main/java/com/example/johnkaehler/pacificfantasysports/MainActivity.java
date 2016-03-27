@@ -12,8 +12,7 @@ import android.widget.EditText;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener{
 
-    Button bLogout;
-    EditText etName, etEmail, etLeagueID;
+    Button bLogout, bCreateLeague, bViewLeagues;
     UserLocalStore userLocalStore;
 
     @Override
@@ -21,9 +20,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        etName = (EditText)findViewById(R.id.etName);
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etLeagueID = (EditText) findViewById(R.id.etLeagueID);
+        bCreateLeague = (Button)findViewById(R.id.bCreateLeagues);
+        bCreateLeague.setOnClickListener(this);
+
+        bViewLeagues = (Button)findViewById(R.id.bViewLeagues);
+        bViewLeagues.setOnClickListener(this);
 
         bLogout = (Button) findViewById(R.id.bLogout);
         bLogout.setOnClickListener(this);
@@ -45,10 +46,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private void displayUserDetails(){
         User user = userLocalStore.getLoggedInUser();
-
-        etEmail.setText(user.email);
-        etName.setText(user.firstName);
-        etLeagueID.setText(user.leagueID+"");
     }
 
     private boolean authenticate(){
@@ -62,6 +59,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 userLocalStore.clearUserData();
                 userLocalStore.setUserLoggedIn(false);
                 startActivity(new Intent(this, Login.class));
+            case R.id.bCreateLeagues:
+                startActivity(new Intent(this, CreateLeague.class));
         }
     }
 }

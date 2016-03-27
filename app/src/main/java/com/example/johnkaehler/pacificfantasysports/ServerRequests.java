@@ -77,7 +77,7 @@ public class ServerRequests {
             HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
 
             HttpClient client = new DefaultHttpClient(httpRequestParams);
-            HttpPost post = new HttpPost("http://127.0.0.1/register.php");
+            HttpPost post = new HttpPost("http://10.0.2.2/register.php");
 
             try{
                 post.setEntity(new UrlEncodedFormEntity(dataToSend));
@@ -119,7 +119,7 @@ public class ServerRequests {
             HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
 
             HttpClient client = new DefaultHttpClient(httpRequestParams);
-            HttpPost post = new HttpPost("http://localhost/FetchUserData.php");
+            HttpPost post = new HttpPost("http://10.0.2.2/FetchUserData.php");
 
             User returnedUser = null;
             try{
