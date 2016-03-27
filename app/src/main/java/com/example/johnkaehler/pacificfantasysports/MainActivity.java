@@ -12,13 +12,16 @@ import android.widget.EditText;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener{
 
-    Button bLogout, bCreateLeague, bViewLeagues;
+    Button bLogout, bCreateLeague, bViewLeagues, bJoinLeague;
     UserLocalStore userLocalStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        bJoinLeague = (Button)findViewById(R.id.bJoinLeague);
+        bCreateLeague.setOnClickListener(this);
 
         bCreateLeague = (Button)findViewById(R.id.bCreateLeagues);
         bCreateLeague.setOnClickListener(this);
