@@ -16,6 +16,7 @@ public class CreateLeague extends ActionBarActivity implements View.OnClickListe
 
     Button bCreateLeague;
     EditText etLeagueName, etLeaguePassword;
+    UserLocalStore userLocalStore;
 
 
     @Override
@@ -28,6 +29,9 @@ public class CreateLeague extends ActionBarActivity implements View.OnClickListe
         bCreateLeague = (Button)findViewById(R.id.bCreateLeague);
 
         bCreateLeague.setOnClickListener(this);
+
+        userLocalStore = new UserLocalStore(this);
+
     }
 
 
@@ -38,7 +42,8 @@ public class CreateLeague extends ActionBarActivity implements View.OnClickListe
                 if(AllFormsFilled()){
                     String leagueName = etLeagueName.getText().toString();
                     String leaguePassword = etLeaguePassword.getText().toString();
-                    League l = new League(leagueName, leaguePassword);
+                    User user = userLocalStore.getLoggedInUser();
+                    League l = new League(leagueName, leaguePassword, user.email);
                     createLeague(l);
                 }
                 else repromptRegisterInfo();

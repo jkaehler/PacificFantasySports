@@ -115,6 +115,7 @@ public class ServerRequests {
             ArrayList<NameValuePair> dataToSend = new ArrayList<>();
             dataToSend.add(new BasicNameValuePair("leagueName", l.name));
             dataToSend.add(new BasicNameValuePair("leaguePassword", l.password));
+            dataToSend.add(new BasicNameValuePair("commissionerEmail", l.commissionerEmail));
 
             HttpParams httpRequestParams = new BasicHttpParams();
             HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
