@@ -1,15 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.johnkaehler.pacificfantasysports.CreateLeague"
-    tools:showIn="@layout/activity_create_league">
+    android:padding="10dp"
+    android:layout_width="match_parent">
 
-</RelativeLayout>
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="League Name"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/etLeagueName"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Create a password"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/etLeaguePassword"
+                android:layout_width="match_parent"
+                android:inputType="textPassword"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Re-type Password"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/etReTypeLeaguePassword"
+                android:layout_width="match_parent"
+                android:inputType="textPassword"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/bCreateLeague"
+                android:text="Create League"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvLoginLink"
+                android:layout_width="wrap_content"
+                android:text="Go Back"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
