@@ -21,7 +21,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         bJoinLeague = (Button)findViewById(R.id.bJoinLeague);
-        bCreateLeague.setOnClickListener(this);
+        bJoinLeague.setOnClickListener(this);
 
         bCreateLeague = (Button)findViewById(R.id.bCreateLeagues);
         bCreateLeague.setOnClickListener(this);

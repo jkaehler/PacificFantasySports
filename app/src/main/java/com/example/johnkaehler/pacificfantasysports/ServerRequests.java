@@ -50,10 +50,16 @@ public class ServerRequests {
         new StoreUserDataAsyncTask(user, userCallback).execute();
     }
 
+    public void createLeagueInBackground(League _l){
+        progressDialog.show();
+        new CreateLeagueAsyncTask(_l).execute();
+    }
+
     public void fetchUserDataInBackground(User user, GetUserCallback callBack){
         progressDialog.show();
         new FetchUserDataAsyncTask(user, callBack).execute();
     }
+
 
     public class StoreUserDataAsyncTask extends AsyncTask<Void, Void, Void>{
         User user;
@@ -97,6 +103,40 @@ public class ServerRequests {
         }
     }
 
+
+    public class CreateLeagueAsyncTask extends AsyncTask<Void, Void, Void> {
+        League l;
+        public CreateLeagueAsyncTask(League _league){
+            this.l = _league;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            ArrayList<NameValuePair> dataToSend = new ArrayList<>();
+            dataToSend.add(new BasicNameValuePair("leagueName", l.name));
+            dataToSend.add(new BasicNameValuePair("leaguePassword", l.password));
+
+            HttpParams httpRequestParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+            HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+
+            HttpClient client = new DefaultHttpClient(httpRequestParams);
+            HttpPost post = new HttpPost("http://10.0.2.2/createleague.php");
+
+            try{
+                post.setEntity(new UrlEncodedFormEntity(dataToSend));
+                client.execute(post);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            progressDialog.dismiss();
+            super.onPostExecute(aVoid);
+        }
+    }
 
 
     public class FetchUserDataAsyncTask extends AsyncTask<Void, Void, User> {
