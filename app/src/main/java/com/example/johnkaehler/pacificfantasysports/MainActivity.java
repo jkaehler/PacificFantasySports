@@ -64,6 +64,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 startActivity(new Intent(this, Login.class));
             case R.id.bCreateLeagues:
                 startActivity(new Intent(this, CreateLeague.class));
+            case R.id.bJoinLeague:
+                startActivity(new Intent(this, JoinLeague.class));
         }
     }
 }

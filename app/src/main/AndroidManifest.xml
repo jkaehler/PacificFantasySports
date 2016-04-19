@@ -25,6 +25,10 @@
         <activity
             android:name=".CreateLeague"
             android:label="@string/title_activity_create_league"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".JoinLeague"
+            android:label="@string/title_activity_join_league"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

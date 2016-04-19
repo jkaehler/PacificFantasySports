@@ -11,12 +11,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class CreateLeague extends ActionBarActivity implements View.OnClickListener{
 
     Button bCreateLeague;
     EditText etLeagueName, etLeaguePassword;
     UserLocalStore userLocalStore;
+    TextView tvGoBack;
 
 
     @Override
@@ -27,8 +29,10 @@ public class CreateLeague extends ActionBarActivity implements View.OnClickListe
         etLeagueName = (EditText)findViewById(R.id.etLeagueName);
         etLeaguePassword = (EditText)findViewById(R.id.etLeaguePassword);
         bCreateLeague = (Button)findViewById(R.id.bCreateLeague);
+        tvGoBack = (TextView)findViewById(R.id.tvGoBack);
 
         bCreateLeague.setOnClickListener(this);
+        tvGoBack.setOnClickListener(this);
 
         userLocalStore = new UserLocalStore(this);
 
@@ -47,7 +51,8 @@ public class CreateLeague extends ActionBarActivity implements View.OnClickListe
                     createLeague(l);
                 }
                 else repromptRegisterInfo();
-
+            case R.id.tvGoBack:
+                startActivity(new Intent(this, MainActivity.class));
         }
     }
 
@@ -59,7 +64,7 @@ public class CreateLeague extends ActionBarActivity implements View.OnClickListe
     private void createLeague(League _l){
         ServerRequests serverRequests = new ServerRequests(this);
         serverRequests.createLeagueInBackground(_l);
-
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     private void repromptRegisterInfo(){

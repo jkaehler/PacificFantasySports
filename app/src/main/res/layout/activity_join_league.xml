@@ -6,62 +6,47 @@
     android:padding="10dp"
     android:layout_width="match_parent">
 
-
-
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:orientation="vertical">
 
 
             <TextView
                 android:layout_width="wrap_content"
-                android:text="League Name"
-                android:layout_height="wrap_content"/>
+                android:text="Enter Commissioner Email"
+                android:layout_height="wrap_content" />
 
             <EditText
-                android:id="@+id/etLeagueName"
+                android:id="@+id/etCommissionerEmail"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="10dp"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:layout_width="wrap_content"
-                android:text="Create a password"
+                android:text="Enter League Password"
                 android:layout_height="wrap_content" />
 
             <EditText
-                android:id="@+id/etLeaguePassword"
-                android:layout_width="match_parent"
-                android:inputType="textPassword"
-                android:layout_marginBottom="10dp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="Re-type Password"
-                android:layout_height="wrap_content" />
-
-            <EditText
-                android:id="@+id/etReTypeLeaguePassword"
+                android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:inputType="textPassword"
                 android:layout_marginBottom="10dp"
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/bCreateLeague"
-                android:text="Create League"
+                android:id="@+id/bRegister"
+                android:text="Join League"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="10dp"
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/tvGoBack"
+                android:id="@+id/tvLoginLink"
                 android:layout_width="wrap_content"
                 android:text="Go Back"
                 android:textStyle="bold"
