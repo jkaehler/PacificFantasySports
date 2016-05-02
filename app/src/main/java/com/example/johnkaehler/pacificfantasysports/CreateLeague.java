@@ -26,11 +26,13 @@ public class CreateLeague extends ActionBarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_league);
 
+        //create variables for all xml objects
         etLeagueName = (EditText)findViewById(R.id.etLeagueName);
         etLeaguePassword = (EditText)findViewById(R.id.etLeaguePassword);
         bCreateLeague = (Button)findViewById(R.id.bCreateLeague);
         tvGoBack = (TextView)findViewById(R.id.tvGoBack);
 
+        //set OnClickListeners
         bCreateLeague.setOnClickListener(this);
         tvGoBack.setOnClickListener(this);
 

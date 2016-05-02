@@ -60,6 +60,12 @@ public class ServerRequests {
         new FetchUserDataAsyncTask(user, callBack).execute();
     }
 
+    public void getLeagueDataInBackground(User user) {
+        progressDialog.show();
+        new RetrieveLeagueAsyncTask().execute();
+
+    }
+
 
     public class StoreUserDataAsyncTask extends AsyncTask<Void, Void, Void>{
         User user;
@@ -174,8 +180,8 @@ public class ServerRequests {
                     returnedUser = null;
                 }
                 else{
-                    String firstName = jObject.getString("firstName");
-                    String lastName = jObject.getString("lastName");
+                    String firstName = jObject.getString("first_name");
+                    String lastName = jObject.getString("last_name");
                     returnedUser = new User(firstName, lastName, user.email, user.password);
                 }
 
@@ -191,6 +197,45 @@ public class ServerRequests {
             progressDialog.dismiss();
             userCallback.done(returnedUser);
             super.onPostExecute(returnedUser);
+        }
+    }
+
+    private class RetrieveLeagueAsyncTask extends AsyncTask <Void, Void, Void> {
+        UserLocalStore userLocalStore;
+        User user = userLocalStore.getLoggedInUser();
+        @Override
+        protected Void doInBackground(Void... params) {
+            ArrayList<NameValuePair> data = new ArrayList<>();
+            data.add(new BasicNameValuePair("Email", user.email));
+
+            HttpParams httpRequestParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+            HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+
+            HttpClient client = new DefaultHttpClient(httpRequestParams);
+            HttpPost post = new HttpPost("http://10.0.2.2/viewleague.php");
+
+            try{
+                post.setEntity(new UrlEncodedFormEntity(data));
+                HttpResponse httpResponse = client.execute(post);
+
+                HttpEntity entity = httpResponse.getEntity();
+                String result = EntityUtils.toString(entity);
+                JSONObject jObject = new JSONObject(result);
+                /*if(jObject.length() == 0){
+                    returnedUser = null;
+                }
+                else{
+                    String firstName = jObject.getString("first_name");
+                    String lastName = jObject.getString("last_name");
+                    returnedUser = new User(firstName, lastName, user.email, user.password);
+                }*/
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+
+            return null;
         }
     }
 }

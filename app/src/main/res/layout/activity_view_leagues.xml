@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.johnkaehler.pacificfantasysports.MainActivity">
+    tools:context="com.example.johnkaehler.pacificfantasysports.ViewLeagues">
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/content_view_leagues" />
 
 </android.support.design.widget.CoordinatorLayout>

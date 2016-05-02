@@ -23,7 +23,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         bJoinLeague = (Button)findViewById(R.id.bJoinLeague);
         bJoinLeague.setOnClickListener(this);
 
-        bCreateLeague = (Button)findViewById(R.id.bCreateLeagues);
+        bCreateLeague = (Button)findViewById(R.id.bCreateLeague);
         bCreateLeague.setOnClickListener(this);
 
         bViewLeagues = (Button)findViewById(R.id.bViewLeagues);
@@ -61,11 +61,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.bLogout:
                 userLocalStore.clearUserData();
                 userLocalStore.setUserLoggedIn(false);
-                startActivity(new Intent(this, Login.class));
-            case R.id.bCreateLeagues:
-                startActivity(new Intent(this, CreateLeague.class));
+                startActivity(new Intent(MainActivity.this, Login.class));
+            case R.id.bCreateLeague:
+                startActivity(new Intent(MainActivity.this, CreateLeague.class));
             case R.id.bJoinLeague:
-                startActivity(new Intent(this, JoinLeague.class));
+                startActivity(new Intent(MainActivity.this, JoinLeague.class));
+            case R.id.bViewLeagues:
+                startActivity(new Intent(MainActivity.this, ViewLeagues.class));
         }
     }
 }
