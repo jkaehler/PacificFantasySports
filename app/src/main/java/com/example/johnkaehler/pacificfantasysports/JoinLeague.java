@@ -23,7 +23,7 @@ public class JoinLeague extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.activity_join_league);
 
         etCommishEmail = (EditText)findViewById(R.id.etCommissionerEmail);
-        etLeaguePassword = (EditText)findViewById(R.id.etLeaguePassword);
+        etLeaguePassword = (EditText)findViewById(R.id.etPassword);
 
         bJoinLeague.setOnClickListener(this);
         tvGoBack.setOnClickListener(this);

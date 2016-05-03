@@ -53,6 +53,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
 
             case R.id.tvRegisterLink://case 'register' is clicked
                 startActivity(new Intent(this, Register.class));//start new activity 'register'
+                break;
         }
     }
     //some comment++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

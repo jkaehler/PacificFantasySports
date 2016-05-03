@@ -62,12 +62,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 userLocalStore.clearUserData();
                 userLocalStore.setUserLoggedIn(false);
                 startActivity(new Intent(MainActivity.this, Login.class));
+                break;
             case R.id.bCreateLeague:
                 startActivity(new Intent(MainActivity.this, CreateLeague.class));
+                break;
             case R.id.bJoinLeague:
                 startActivity(new Intent(MainActivity.this, JoinLeague.class));
+                break;
             case R.id.bViewLeagues:
                 startActivity(new Intent(MainActivity.this, ViewLeagues.class));
+                break;
         }
     }
 }

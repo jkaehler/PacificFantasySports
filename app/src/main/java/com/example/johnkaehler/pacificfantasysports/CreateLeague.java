@@ -35,9 +35,6 @@ public class CreateLeague extends ActionBarActivity implements View.OnClickListe
         //set OnClickListeners
         bCreateLeague.setOnClickListener(this);
         tvGoBack.setOnClickListener(this);
-
-        userLocalStore = new UserLocalStore(this);
-
     }
 
 
