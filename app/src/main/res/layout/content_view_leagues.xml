@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/InnerLayout">
-            
+
             <TextView
                 android:id="@+id/tvGoBack"
                 android:layout_width="wrap_content"

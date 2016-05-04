@@ -21,7 +21,6 @@
         </activity>
 
         <activity android:name=".Login" />
-
         <activity android:name=".Register" />
 
         <activity
@@ -37,6 +36,12 @@
             android:name=".JoinLeague"
             android:label="@string/title_activity_join_league"
             android:theme="@style/AppTheme.NoActionBar" />
+        <intent-filter>
+            <action android:name="com.example.johnkaehler.pacificfantasysports.JoinLeague" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+
+
         <activity
             android:name=".ViewLeagues"
             android:label="@string/title_activity_view_leagues"

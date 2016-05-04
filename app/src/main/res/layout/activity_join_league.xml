@@ -7,6 +7,6 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.johnkaehler.pacificfantasysports.JoinLeague">
 
-    <include layout="@layout/content_view_leagues" />
+    <include layout="@layout/content_join_league" />
 
 </android.support.design.widget.CoordinatorLayout>
