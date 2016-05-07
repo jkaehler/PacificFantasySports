@@ -17,6 +17,30 @@
             android:orientation="vertical"
             android:id="@+id/InnerLayout">
 
+            <Button
+                android:id="@+id/bLeague1"
+                android:text="Deflators Gonna Deflate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/bLeague2"
+                android:text="Discount Belichek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/bLeague3"
+                android:text="The Dirty Dozen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/bLeague4"
+                android:text="The Road to Glory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <TextView
                 android:id="@+id/tvGoBack"
                 android:layout_width="wrap_content"

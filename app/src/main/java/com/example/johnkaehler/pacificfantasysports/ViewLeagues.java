@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 public class ViewLeagues extends AppCompatActivity {
 
-    UserLocalStore userLocalStore;
+    //UserLocalStore userLocalStore;
 
 
     @Override
@@ -23,9 +23,8 @@ public class ViewLeagues extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_leagues);
 
-        userLocalStore = new UserLocalStore(this);
-        User user = userLocalStore.getLoggedInUser();
-
+        //userLocalStore = new UserLocalStore(this);
+        //User user = userLocalStore.getLoggedInUser();
         //dynamicallyAddLeagueButtons(user.email);
     }
 
