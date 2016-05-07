@@ -60,7 +60,7 @@ public class ServerRequests {
         new FetchUserDataAsyncTask(user, callBack).execute();
     }
 
-    public void getLeagueDataInBackground(User user) {
+    public void getLeagueDataInBackground(String email, GetLeagueCallback getLeagueCallback) {
         progressDialog.show();
         new RetrieveLeagueAsyncTask().execute();
 
@@ -200,7 +200,7 @@ public class ServerRequests {
         }
     }
 
-    private class RetrieveLeagueAsyncTask extends AsyncTask <Void, Void, Void> {
+    public class RetrieveLeagueAsyncTask extends AsyncTask <Void, Void, Void> {
         UserLocalStore userLocalStore;
         User user = userLocalStore.getLoggedInUser();
         @Override

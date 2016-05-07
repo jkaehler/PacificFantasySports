@@ -1,14 +1,18 @@
 package com.example.johnkaehler.pacificfantasysports;
 
+import java.util.List;
+
 /**
  * Created by John Kaehler on 4/17/2016.
  */
 public class League {
     String name, password, commissionerEmail;
+    List<String> memberEmails;
 
-    public League(String _name, String _password, String _commissionerEmail){
+    public League(String _commissionerEmail, String _name, List<String> _memberEmails, String _password){
         name = _name;
         password = _password;
         commissionerEmail = _commissionerEmail;
+        memberEmails = _memberEmails;
     }
 }

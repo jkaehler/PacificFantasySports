@@ -46,7 +46,7 @@ public class CreateLeague extends ActionBarActivity implements View.OnClickListe
                     String leagueName = etLeagueName.getText().toString();
                     String leaguePassword = etLeaguePassword.getText().toString();
                     User user = userLocalStore.getLoggedInUser();
-                    League l = new League(leagueName, leaguePassword, user.email);
+                    League l = new League(user.email, leagueName, null, leaguePassword);
                     createLeague(l);
                 }
                 else repromptRegisterInfo();

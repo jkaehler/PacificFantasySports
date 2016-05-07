@@ -26,10 +26,25 @@ public class ViewLeagues extends AppCompatActivity {
         userLocalStore = new UserLocalStore(this);
         User user = userLocalStore.getLoggedInUser();
 
-        dynamicallyAddButtons();
+        //dynamicallyAddLeagueButtons(user.email);
     }
 
-    private void dynamicallyAddButtons() {
+    private void dynamicallyAddLeagueButtons(String email) {
+
+        ServerRequests serverRequests = new ServerRequests(this);
+        serverRequests.getLeagueDataInBackground(email, new GetLeagueCallback() {
+            @Override
+            public void done(League league) {
+                if(league == null){//if no one is returned
+                    //showErrorMessage();//show error message
+                    //not in any leagues
+                }
+                else{
+                    //put information in here
+
+                }
+            }
+        });
         //dynamically add buttons to view
         final LinearLayout lm = (LinearLayout) findViewById(R.id.InnerLayout);
 
