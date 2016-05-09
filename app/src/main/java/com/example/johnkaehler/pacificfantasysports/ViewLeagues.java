@@ -1,5 +1,6 @@
 package com.example.johnkaehler.pacificfantasysports;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,15 +14,35 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ViewLeagues extends AppCompatActivity {
+public class ViewLeagues extends AppCompatActivity implements View.OnClickListener{
 
     //UserLocalStore userLocalStore;
+    Button bLeague1, bLeague2, bLeague3, bLeague4;
+    //Button[] bLeague;
+    TextView goBack;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_leagues);
+
+        bLeague1 = (Button)findViewById(R.id.bLeague1);
+        bLeague1.setOnClickListener(this);
+
+        bLeague2 = (Button)findViewById(R.id.bLeague2);
+        bLeague2.setOnClickListener(this);
+
+        bLeague3 = (Button)findViewById(R.id.bLeague3);
+        bLeague3.setOnClickListener(this);
+
+        bLeague4 = (Button)findViewById(R.id.bLeague4);
+        bLeague4.setOnClickListener(this);
+
+        goBack = (TextView)findViewById(R.id.tvGoBack);
+        goBack.setOnClickListener(this);
+
+
 
         //userLocalStore = new UserLocalStore(this);
         //User user = userLocalStore.getLoggedInUser();
@@ -84,4 +105,21 @@ public class ViewLeagues extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.bLeague1:
+                startActivity(new Intent(this, LeagueActivity.class));
+                break;
+            case R.id.bLeague2:
+                startActivity(new Intent(this, LeagueActivity.class));
+                break;
+            case R.id.bLeague3:
+                startActivity(new Intent(this, LeagueActivity.class));
+                break;
+            case R.id.bLeague4:
+                startActivity(new Intent(this, LeagueActivity.class));
+                break;
+        }
+    }
 }
