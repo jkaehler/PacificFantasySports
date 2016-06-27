@@ -14,18 +14,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 public class ViewLeagues extends AppCompatActivity implements View.OnClickListener{
 
-    //UserLocalStore userLocalStore;
+    UserLocalStore userLocalStore;
     Button bLeague1, bLeague2, bLeague3, bLeague4;
     //Button[] bLeague;
     TextView goBack;
+    User user;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_leagues);
+
+        userLocalStore = new UserLocalStore(this);
+        dynamicallyAddLeagueButtons(userLocalStore.getLoggedInUser().email);
 
         bLeague1 = (Button)findViewById(R.id.bLeague1);
         bLeague1.setOnClickListener(this);
@@ -41,30 +47,23 @@ public class ViewLeagues extends AppCompatActivity implements View.OnClickListen
 
         goBack = (TextView)findViewById(R.id.tvGoBack);
         goBack.setOnClickListener(this);
-
-
-
-        //userLocalStore = new UserLocalStore(this);
-        //User user = userLocalStore.getLoggedInUser();
-        //dynamicallyAddLeagueButtons(user.email);
     }
 
     private void dynamicallyAddLeagueButtons(String email) {
 
-        ServerRequests serverRequests = new ServerRequests(this);
-        serverRequests.getLeagueDataInBackground(email, new GetLeagueCallback() {
+        final ServerRequests serverRequests = new ServerRequests(this);
+        serverRequests.getLeagueDataInBackground(email, new GetListOfLeaguesCallback() {
             @Override
-            public void done(League league) {
-                if(league == null){//if no one is returned
-                    //showErrorMessage();//show error message
-                    //not in any leagues
-                }
-                else{
-                    //put information in here
-
+            public void done(List<String> listOfLeagues) {
+                if (listOfLeagues == null) {
+                    createButtonObjects();
+                } else {
+                    //populate field
+                    return;
                 }
             }
         });
+
         //dynamically add buttons to view
         final LinearLayout lm = (LinearLayout) findViewById(R.id.InnerLayout);
 
@@ -103,6 +102,10 @@ public class ViewLeagues extends AppCompatActivity implements View.OnClickListen
             lm.addView(ll);
         }
 
+    }
+
+    private void createButtonObjects() {
+        return;
     }
 
     @Override

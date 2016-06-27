@@ -24,6 +24,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -60,12 +61,10 @@ public class ServerRequests {
         new FetchUserDataAsyncTask(user, callBack).execute();
     }
 
-    public void getLeagueDataInBackground(String email, GetLeagueCallback getLeagueCallback) {
+    public void getLeagueDataInBackground(String email, GetListOfLeaguesCallback getListOfLeaguesCallback) {
         progressDialog.show();
-        new RetrieveLeagueAsyncTask().execute();
-
+        new RetrieveLeagueAsyncTask(email, getListOfLeaguesCallback).execute();
     }
-
 
     public class StoreUserDataAsyncTask extends AsyncTask<Void, Void, Void>{
         User user;
@@ -109,7 +108,6 @@ public class ServerRequests {
         }
     }
 
-
     public class CreateLeagueAsyncTask extends AsyncTask<Void, Void, Void> {
         League l;
         public CreateLeagueAsyncTask(League _league){
@@ -144,7 +142,6 @@ public class ServerRequests {
             super.onPostExecute(aVoid);
         }
     }
-
 
     public class FetchUserDataAsyncTask extends AsyncTask<Void, Void, User> {
         User user;
@@ -200,13 +197,20 @@ public class ServerRequests {
         }
     }
 
-    public class RetrieveLeagueAsyncTask extends AsyncTask <Void, Void, Void> {
-        UserLocalStore userLocalStore;
-        User user = userLocalStore.getLoggedInUser();
+    public class RetrieveLeagueAsyncTask extends AsyncTask <Void, Void, List<String>> {
+
+        String email;
+        GetListOfLeaguesCallback leagueCallback;
+
+        public RetrieveLeagueAsyncTask(String _email, GetListOfLeaguesCallback _leagueCallback){
+            this.email = _email;
+            this.leagueCallback = _leagueCallback;
+        }
+
         @Override
-        protected Void doInBackground(Void... params) {
+        protected List<String> doInBackground(Void... params) {
             ArrayList<NameValuePair> data = new ArrayList<>();
-            data.add(new BasicNameValuePair("Email", user.email));
+            data.add(new BasicNameValuePair("Email", email));
 
             HttpParams httpRequestParams = new BasicHttpParams();
             HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
@@ -215,27 +219,37 @@ public class ServerRequests {
             HttpClient client = new DefaultHttpClient(httpRequestParams);
             HttpPost post = new HttpPost("http://10.0.2.2/viewleague.php");
 
+            List<String> returnedLeagues = new ArrayList<>();
+
             try{
                 post.setEntity(new UrlEncodedFormEntity(data));
                 HttpResponse httpResponse = client.execute(post);
 
                 HttpEntity entity = httpResponse.getEntity();
                 String result = EntityUtils.toString(entity);
-                JSONObject jObject = new JSONObject(result);
-                /*if(jObject.length() == 0){
-                    returnedUser = null;
+                JSONArray jsonArray = new JSONArray(result);
+                if(jsonArray.length() == 0){
+                    returnedLeagues = null;
                 }
                 else{
-                    String firstName = jObject.getString("first_name");
-                    String lastName = jObject.getString("last_name");
-                    returnedUser = new User(firstName, lastName, user.email, user.password);
-                }*/
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        returnedLeagues.add(jsonArray.getString(i));
+                    }
+                }
 
             }catch(Exception e){
                 e.printStackTrace();
             }
 
-            return null;
+            return returnedLeagues;
+        }
+
+        @Override
+        protected void onPostExecute(List<String> listOfLeagues) {
+
+            progressDialog.dismiss();
+            leagueCallback.done(listOfLeagues);
+            super.onPostExecute(listOfLeagues);
         }
     }
 }

@@ -40,16 +40,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onStart();
 
         if(authenticate()){
-            displayUserDetails();
+            //displayUserDetails();
         }
         else{
             startActivity(new Intent(MainActivity.this, Login.class));
         }
     }
 
-    private void displayUserDetails(){
-        User user = userLocalStore.getLoggedInUser();
-    }
 
     private boolean authenticate(){
         return userLocalStore.getUserLoggedIn();
