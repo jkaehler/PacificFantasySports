@@ -69,6 +69,13 @@ public class JoinLeague extends ActionBarActivity implements View.OnClickListene
     }
 
     private void attemptToJoinLeague(String emailParam, String leaguePasswordParam) {
-
+        ServerRequests serverRequests = new ServerRequests(this);
+        serverRequests.attemptToJoinLeagueInBackground(emailParam, leaguePasswordParam, new JoinLeagueCallback() {
+            @Override
+            public void done(Boolean hasJoined) {
+                if(hasJoined){
+                }
+            }
+        });
     }
 }

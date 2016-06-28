@@ -26,6 +26,8 @@ public class CreateLeague extends ActionBarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_league);
 
+        userLocalStore=new UserLocalStore(this);
+
         //create variables for all xml objects
         etLeagueName = (EditText)findViewById(R.id.etLeagueName);
         etLeaguePassword = (EditText)findViewById(R.id.etLeaguePassword);
@@ -62,7 +64,15 @@ public class CreateLeague extends ActionBarActivity implements View.OnClickListe
 
     private void createLeague(League _l){
         ServerRequests serverRequests = new ServerRequests(this);
-        serverRequests.createLeagueInBackground(_l);
+        serverRequests.createLeagueInBackground(_l, new CreateLeagueCallback() {
+            @Override
+            public void done() {
+
+            }
+        });
+
+
+
         startActivity(new Intent(this, MainActivity.class));
     }
 

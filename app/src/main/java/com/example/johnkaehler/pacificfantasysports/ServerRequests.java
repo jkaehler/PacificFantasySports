@@ -2,7 +2,9 @@ package com.example.johnkaehler.pacificfantasysports;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Paint;
 import android.os.AsyncTask;
+import android.util.Pair;
 import android.widget.CheckBox;
 
 import org.apache.http.HttpEntity;
@@ -37,7 +39,7 @@ public class ServerRequests {
     ProgressDialog progressDialog;
 
     public static final int CONNECTION_TIMEOUT = 1000 * 15;//how long it will take for connection to timeout
-    public static final String SERVER_ADDRESS = "http://localhost";//sending data to local hosted server
+    public static final String SERVER_ADDRESS = "http://10.0.2.2/PFS_PHP/";//sending data to local hosted server
 
     public ServerRequests(Context context){//constructor
         progressDialog = new ProgressDialog(context);
@@ -51,9 +53,9 @@ public class ServerRequests {
         new StoreUserDataAsyncTask(user, userCallback).execute();
     }
 
-    public void createLeagueInBackground(League _l){
+    public void createLeagueInBackground(League _l, CreateLeagueCallback createLeagueCallback){
         progressDialog.show();
-        new CreateLeagueAsyncTask(_l).execute();
+        new CreateLeagueAsyncTask(_l, createLeagueCallback).execute();
     }
 
     public void fetchUserDataInBackground(User user, GetUserCallback callBack){
@@ -64,6 +66,61 @@ public class ServerRequests {
     public void getLeagueDataInBackground(String email, GetListOfLeaguesCallback getListOfLeaguesCallback) {
         progressDialog.show();
         new RetrieveLeagueAsyncTask(email, getListOfLeaguesCallback).execute();
+    }
+
+    public void attemptToJoinLeagueInBackground(String commishEmail, String leaguePw, JoinLeagueCallback joinLeagueCallback) {
+        progressDialog.show();
+        new JoinLeagueAsyncTask(commishEmail, leaguePw, joinLeagueCallback).execute();
+    }
+
+    public class JoinLeagueAsyncTask extends AsyncTask<Void, Void, Boolean>{
+
+        String leagueEmail, leaguePassword;
+        JoinLeagueCallback joinLeagueCallback;
+
+        public JoinLeagueAsyncTask(String _commishEmail, String _leaguePw, JoinLeagueCallback _joinLeagueCallback){
+            leagueEmail = _commishEmail;
+            leaguePassword = _leaguePw;
+            joinLeagueCallback = _joinLeagueCallback;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            ArrayList<NameValuePair> dataToSend = new ArrayList<>();
+            dataToSend.add(new BasicNameValuePair("email", leagueEmail));
+            dataToSend.add(new BasicNameValuePair("password", leaguePassword));
+
+            HttpParams httpRequestParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+            HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+
+            HttpClient client = new DefaultHttpClient(httpRequestParams);
+            HttpPost post = new HttpPost(SERVER_ADDRESS +"joinleague.php");
+
+            try{
+                post.setEntity(new UrlEncodedFormEntity(dataToSend));
+                HttpResponse httpResponse = client.execute(post);
+
+                HttpEntity entity = httpResponse.getEntity();
+                String result = EntityUtils.toString(entity);
+                JSONObject jObject = new JSONObject(result);
+
+                if(jObject.length() == 0)return false;
+                else return true;
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        //@Override
+        //protected void onPostExecute(Void aVoid) {
+
+            //progressDialog.dismiss();
+            //userCallback.done(null);
+            //super.onPostExecute(aVoid);
+        //}
     }
 
     public class StoreUserDataAsyncTask extends AsyncTask<Void, Void, Void>{
@@ -88,7 +145,7 @@ public class ServerRequests {
             HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
 
             HttpClient client = new DefaultHttpClient(httpRequestParams);
-            HttpPost post = new HttpPost("http://10.0.2.2/register.php");
+            HttpPost post = new HttpPost(SERVER_ADDRESS +"register.php");
 
             try{
                 post.setEntity(new UrlEncodedFormEntity(dataToSend));
@@ -110,23 +167,26 @@ public class ServerRequests {
 
     public class CreateLeagueAsyncTask extends AsyncTask<Void, Void, Void> {
         League l;
-        public CreateLeagueAsyncTask(League _league){
+        CreateLeagueCallback createLeagueCallback;
+
+        public CreateLeagueAsyncTask(League _league, CreateLeagueCallback _createLeagueCallback){
             this.l = _league;
+            createLeagueCallback = _createLeagueCallback;
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             ArrayList<NameValuePair> dataToSend = new ArrayList<>();
+            dataToSend.add(new BasicNameValuePair("commissionerEmail", l.commissionerEmail));
             dataToSend.add(new BasicNameValuePair("leagueName", l.name));
             dataToSend.add(new BasicNameValuePair("leaguePassword", l.password));
-            dataToSend.add(new BasicNameValuePair("commissionerEmail", l.commissionerEmail));
 
             HttpParams httpRequestParams = new BasicHttpParams();
             HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
             HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
 
             HttpClient client = new DefaultHttpClient(httpRequestParams);
-            HttpPost post = new HttpPost("http://10.0.2.2/createleague.php");
+            HttpPost post = new HttpPost(SERVER_ADDRESS +"createleague.php");
 
             try{
                 post.setEntity(new UrlEncodedFormEntity(dataToSend));
@@ -163,7 +223,7 @@ public class ServerRequests {
             HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
 
             HttpClient client = new DefaultHttpClient(httpRequestParams);
-            HttpPost post = new HttpPost("http://10.0.2.2/FetchUserData.php");
+            HttpPost post = new HttpPost(SERVER_ADDRESS +"FetchUserData.php");
 
             User returnedUser = null;
             try{
@@ -217,7 +277,7 @@ public class ServerRequests {
             HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
 
             HttpClient client = new DefaultHttpClient(httpRequestParams);
-            HttpPost post = new HttpPost("http://10.0.2.2/viewleague.php");
+            HttpPost post = new HttpPost(SERVER_ADDRESS +"viewleague.php");
 
             List<String> returnedLeagues = new ArrayList<>();
 

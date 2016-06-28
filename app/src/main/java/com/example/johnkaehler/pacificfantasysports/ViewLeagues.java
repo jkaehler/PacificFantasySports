@@ -19,11 +19,7 @@ import java.util.List;
 public class ViewLeagues extends AppCompatActivity implements View.OnClickListener{
 
     UserLocalStore userLocalStore;
-    Button bLeague1, bLeague2, bLeague3, bLeague4;
-    //Button[] bLeague;
     TextView goBack;
-    User user;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,49 +27,37 @@ public class ViewLeagues extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_view_leagues);
 
         userLocalStore = new UserLocalStore(this);
-        dynamicallyAddLeagueButtons(userLocalStore.getLoggedInUser().email);
+        String email = userLocalStore.getLoggedInUser().email;
 
-        bLeague1 = (Button)findViewById(R.id.bLeague1);
-        bLeague1.setOnClickListener(this);
-
-        bLeague2 = (Button)findViewById(R.id.bLeague2);
-        bLeague2.setOnClickListener(this);
-
-        bLeague3 = (Button)findViewById(R.id.bLeague3);
-        bLeague3.setOnClickListener(this);
-
-        bLeague4 = (Button)findViewById(R.id.bLeague4);
-        bLeague4.setOnClickListener(this);
+        ServerRequests serverRequests = new ServerRequests(this);
+        serverRequests.getLeagueDataInBackground(email, new GetListOfLeaguesCallback() {
+            @Override
+            public void done(List<String> listOfLeagues) {
+                if (listOfLeagues == null) {
+                    //Show error message
+                } else {
+                    dynamicallyAddLeagueButtons(listOfLeagues);
+                }
+            }
+        });
 
         goBack = (TextView)findViewById(R.id.tvGoBack);
         goBack.setOnClickListener(this);
     }
 
-    private void dynamicallyAddLeagueButtons(String email) {
+    private void dynamicallyAddLeagueButtons(List<String> listOfLeagues) {
 
-        final ServerRequests serverRequests = new ServerRequests(this);
-        serverRequests.getLeagueDataInBackground(email, new GetListOfLeaguesCallback() {
-            @Override
-            public void done(List<String> listOfLeagues) {
-                if (listOfLeagues == null) {
-                    createButtonObjects();
-                } else {
-                    //populate field
-                    return;
-                }
-            }
-        });
+        int listSize = listOfLeagues.size();
 
         //dynamically add buttons to view
         final LinearLayout lm = (LinearLayout) findViewById(R.id.InnerLayout);
 
         // create the layout params that will be used to define how your
         // button will be displayed
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                GridLayout.LayoutParams.WRAP_CONTENT, GridLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(GridLayout.LayoutParams.MATCH_PARENT, GridLayout.LayoutParams.WRAP_CONTENT);
 
         //Create four
-        for(int j=0;j<=4;j++)
+        for(int j=0;j<listSize;j++)
         {
             // Create LinearLayout
             LinearLayout ll = new LinearLayout(this);
@@ -81,18 +65,16 @@ public class ViewLeagues extends AppCompatActivity implements View.OnClickListen
 
             // Create Button
             final Button btn = new Button(this);
-            //btn.setWidth(200);
+            btn.setWidth(200);
             // Give button an ID
             btn.setId(j+1);
-            btn.setText("League "+j+1);
+            btn.setText(listOfLeagues.get(j));
             // set the layoutParams on the button
             btn.setLayoutParams(params);
 
-            final int index = j;
             // Set click listener for button
             btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-
                 }
             });
 
@@ -101,7 +83,6 @@ public class ViewLeagues extends AppCompatActivity implements View.OnClickListen
             //Add button to LinearLayout defined in XML
             lm.addView(ll);
         }
-
     }
 
     private void createButtonObjects() {
@@ -111,18 +92,7 @@ public class ViewLeagues extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.bLeague1:
-                startActivity(new Intent(this, LeagueActivity.class));
-                break;
-            case R.id.bLeague2:
-                startActivity(new Intent(this, LeagueActivity.class));
-                break;
-            case R.id.bLeague3:
-                startActivity(new Intent(this, LeagueActivity.class));
-                break;
-            case R.id.bLeague4:
-                startActivity(new Intent(this, LeagueActivity.class));
-                break;
+
         }
     }
 }

@@ -37,8 +37,6 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
 
         bRegister.setOnClickListener(this);
         tvLoginLink.setOnClickListener(this);
-
-
     }
 
     @Override
