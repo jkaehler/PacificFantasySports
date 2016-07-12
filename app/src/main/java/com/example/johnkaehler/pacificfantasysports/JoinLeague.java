@@ -22,6 +22,7 @@ public class JoinLeague extends ActionBarActivity implements View.OnClickListene
     Button bJoinLeague;
     EditText etCommishEmail, etLeaguePassword;
     TextView tvGoBack;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,9 @@ public class JoinLeague extends ActionBarActivity implements View.OnClickListene
 
         bJoinLeague.setOnClickListener(this);
         tvGoBack.setOnClickListener(this);
+
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+        user = userLocalStore.getLoggedInUser();
     }
 
     @Override
@@ -44,7 +48,8 @@ public class JoinLeague extends ActionBarActivity implements View.OnClickListene
                 if(allFieldsFilled()){
                     String commissionerEmail = etCommishEmail.getText().toString();
                     String leaguePassword = etLeaguePassword.getText().toString();
-                    attemptToJoinLeague(commissionerEmail, leaguePassword);
+                    String userEmail = user.email;
+                    attemptToJoinLeague(commissionerEmail, leaguePassword, userEmail);
                 }
                 else{
                     repromptLeagueInfo();
@@ -68,14 +73,20 @@ public class JoinLeague extends ActionBarActivity implements View.OnClickListene
         return true;
     }
 
-    private void attemptToJoinLeague(String emailParam, String leaguePasswordParam) {
+    private void attemptToJoinLeague(String emailParam, String leaguePasswordParam, String memberEmail) {
         ServerRequests serverRequests = new ServerRequests(this);
-        serverRequests.attemptToJoinLeagueInBackground(emailParam, leaguePasswordParam, new JoinLeagueCallback() {
+        serverRequests.attemptToJoinLeagueInBackground(emailParam, leaguePasswordParam, memberEmail, new JoinLeagueCallback() {
             @Override
-            public void done(Boolean hasJoined) {
-                if(hasJoined){
-                }
+            public void done(String _msg) {
+                    showResultToUser(_msg);
             }
         });
+    }
+
+    private void showResultToUser(String result) {
+        AlertDialog.Builder dialogueBuilder = new AlertDialog.Builder(JoinLeague.this);
+        dialogueBuilder.setMessage(result);
+        dialogueBuilder.setPositiveButton("Okay", null);
+        dialogueBuilder.show();
     }
 }

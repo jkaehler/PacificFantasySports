@@ -1,40 +1,31 @@
 package com.example.johnkaehler.pacificfantasysports;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Paint;
 import android.os.AsyncTask;
-import android.util.Pair;
-import android.widget.CheckBox;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ServerRequests {
+public class ServerRequests extends Activity{
 
     ProgressDialog progressDialog;
 
@@ -68,27 +59,29 @@ public class ServerRequests {
         new RetrieveLeagueAsyncTask(email, getListOfLeaguesCallback).execute();
     }
 
-    public void attemptToJoinLeagueInBackground(String commishEmail, String leaguePw, JoinLeagueCallback joinLeagueCallback) {
+    public void attemptToJoinLeagueInBackground(String commishEmail, String leaguePw, String memberEmail, JoinLeagueCallback joinLeagueCallback) {
         progressDialog.show();
-        new JoinLeagueAsyncTask(commishEmail, leaguePw, joinLeagueCallback).execute();
+        new JoinLeagueAsyncTask(commishEmail, leaguePw, memberEmail, joinLeagueCallback).execute();
     }
 
-    public class JoinLeagueAsyncTask extends AsyncTask<Void, Void, Boolean>{
+    public class JoinLeagueAsyncTask extends AsyncTask<Void, Void, String>{
 
-        String leagueEmail, leaguePassword;
+        String leagueEmail, leaguePassword, memberEmail;
         JoinLeagueCallback joinLeagueCallback;
 
-        public JoinLeagueAsyncTask(String _commishEmail, String _leaguePw, JoinLeagueCallback _joinLeagueCallback){
+        public JoinLeagueAsyncTask(String _commishEmail, String _leaguePw, String _memberEmail, JoinLeagueCallback _joinLeagueCallback){
             leagueEmail = _commishEmail;
             leaguePassword = _leaguePw;
             joinLeagueCallback = _joinLeagueCallback;
+            memberEmail = _memberEmail;
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected String doInBackground(Void... params) {
             ArrayList<NameValuePair> dataToSend = new ArrayList<>();
             dataToSend.add(new BasicNameValuePair("email", leagueEmail));
             dataToSend.add(new BasicNameValuePair("password", leaguePassword));
+            dataToSend.add(new BasicNameValuePair("member_email", memberEmail));
 
             HttpParams httpRequestParams = new BasicHttpParams();
             HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
@@ -103,10 +96,8 @@ public class ServerRequests {
 
                 HttpEntity entity = httpResponse.getEntity();
                 String result = EntityUtils.toString(entity);
-                JSONObject jObject = new JSONObject(result);
-
-                if(jObject.length() == 0)return false;
-                else return true;
+                progressDialog.dismiss();
+                return result;
 
             }catch(Exception e){
                 e.printStackTrace();
@@ -114,13 +105,13 @@ public class ServerRequests {
             return null;
         }
 
-        //@Override
-        //protected void onPostExecute(Void aVoid) {
 
-            //progressDialog.dismiss();
-            //userCallback.done(null);
-            //super.onPostExecute(aVoid);
-        //}
+        @Override
+        protected void onPostExecute(String _msg) {
+            progressDialog.dismiss();
+            joinLeagueCallback.done(_msg);
+            super.onPostExecute(_msg);
+        }
     }
 
     public class StoreUserDataAsyncTask extends AsyncTask<Void, Void, Void>{
@@ -250,7 +241,6 @@ public class ServerRequests {
 
         @Override
         protected void onPostExecute(User returnedUser) {
-
             progressDialog.dismiss();
             userCallback.done(returnedUser);
             super.onPostExecute(returnedUser);
