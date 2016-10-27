@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Pair;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -21,8 +22,12 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 public class ServerRequests extends Activity{
@@ -62,6 +67,11 @@ public class ServerRequests extends Activity{
     public void attemptToJoinLeagueInBackground(String commishEmail, String leaguePw, String memberEmail, JoinLeagueCallback joinLeagueCallback) {
         progressDialog.show();
         new JoinLeagueAsyncTask(commishEmail, leaguePw, memberEmail, joinLeagueCallback).execute();
+    }
+
+    public void GetTeamListInBackground(String commishEmail, String userEmail, GetCallback getCallback) {
+        progressDialog.show();
+        new GetTeamListAsyncTask(commishEmail, userEmail, getCallback).execute();
     }
 
     public class JoinLeagueAsyncTask extends AsyncTask<Void, Void, String>{
@@ -247,7 +257,7 @@ public class ServerRequests extends Activity{
         }
     }
 
-    public class RetrieveLeagueAsyncTask extends AsyncTask <Void, Void, List<String>> {
+    public class RetrieveLeagueAsyncTask extends AsyncTask <Void, Void, List<LeagueEmailNameJoin>> {
 
         String email;
         GetListOfLeaguesCallback leagueCallback;
@@ -258,7 +268,7 @@ public class ServerRequests extends Activity{
         }
 
         @Override
-        protected List<String> doInBackground(Void... params) {
+        protected List<LeagueEmailNameJoin> doInBackground(Void... params) {
             ArrayList<NameValuePair> data = new ArrayList<>();
             data.add(new BasicNameValuePair("Email", email));
 
@@ -269,7 +279,7 @@ public class ServerRequests extends Activity{
             HttpClient client = new DefaultHttpClient(httpRequestParams);
             HttpPost post = new HttpPost(SERVER_ADDRESS +"viewleague.php");
 
-            List<String> returnedLeagues = new ArrayList<>();
+            List<LeagueEmailNameJoin> returnedLeagues = new ArrayList<>();
 
             try{
                 post.setEntity(new UrlEncodedFormEntity(data));
@@ -277,13 +287,18 @@ public class ServerRequests extends Activity{
 
                 HttpEntity entity = httpResponse.getEntity();
                 String result = EntityUtils.toString(entity);
-                JSONArray jsonArray = new JSONArray(result);
-                if(jsonArray.length() == 0){
+                JSONObject jsonObject = new JSONObject(result);
+
+                if(jsonObject.length() == 0){
                     returnedLeagues = null;
                 }
                 else{
-                    for(int i = 0; i < jsonArray.length(); i++){
-                        returnedLeagues.add(jsonArray.getString(i));
+                Iterator<String> keys = jsonObject.keys();
+                    while(keys.hasNext()){
+                        String leagueName = keys.next();
+                        String commishEmail = jsonObject.getString(leagueName);
+                        LeagueEmailNameJoin leagueEmailNameJoin = new LeagueEmailNameJoin(commishEmail, leagueName);
+                        returnedLeagues.add(leagueEmailNameJoin);
                     }
                 }
 
@@ -293,13 +308,88 @@ public class ServerRequests extends Activity{
 
             return returnedLeagues;
         }
-
         @Override
-        protected void onPostExecute(List<String> listOfLeagues) {
+        protected void onPostExecute(List<LeagueEmailNameJoin> listOfLeagues) {
 
             progressDialog.dismiss();
             leagueCallback.done(listOfLeagues);
             super.onPostExecute(listOfLeagues);
+        }
+    }
+
+    private class GetTeamListAsyncTask extends AsyncTask<Void, Void, Team>
+    {
+
+        String commishEmail, userEmail;
+        GetCallback getCallback;
+
+        public GetTeamListAsyncTask(String _commishEmail, String _userEmail, GetCallback _getCallback) {
+            commishEmail = _commishEmail;
+            userEmail = _userEmail;
+            getCallback = _getCallback;
+        }
+
+        @Override
+        protected Team doInBackground(Void... params) {
+
+            ArrayList<NameValuePair> data = new ArrayList<>();
+            data.add(new BasicNameValuePair("commishEmail", commishEmail));
+            data.add(new BasicNameValuePair("userEmail", userEmail));
+
+            HttpParams httpRequestParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+            HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+
+            HttpClient client = new DefaultHttpClient(httpRequestParams);
+            HttpPost post = new HttpPost(SERVER_ADDRESS +"returnTeam.php");
+
+            Team returnedTeam = new Team();
+            List<Athlete> athletes = new ArrayList<Athlete>();
+
+            try{
+                post.setEntity(new UrlEncodedFormEntity(data));
+                HttpResponse httpResponse = client.execute(post);
+
+                HttpEntity entity = httpResponse.getEntity();
+                String result = EntityUtils.toString(entity);
+                JSONArray jsonArray = new JSONArray(result);
+
+                if(jsonArray.length() == 0){
+                    returnedTeam = null;
+                }
+                else{
+                    int numOfAthletes = jsonArray.length();
+                    double totalPoints = 0;
+
+                    for(int i = 0; i < numOfAthletes; i++){
+                        String index = jsonArray.getString(i);
+                        JSONObject jsonObject = new JSONObject(index);
+                        String name = jsonObject.getString("name");
+                        String sport = jsonObject.getString("sport");
+                        String position = jsonObject.getString("position");
+                        int athleteID = jsonObject.getInt("athlete_id");
+                        double points = jsonObject.getDouble("points");
+                        totalPoints += points;
+                        Athlete athlete = new Athlete(athleteID, points, name, position, sport);
+                        athletes.add(athlete);
+                    }
+                    returnedTeam.athleteList = athletes;
+                    returnedTeam.teamName = "Buttslappers";
+                    returnedTeam.totalPoints = totalPoints;
+                    returnedTeam.teamId = 0;
+                }
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+
+            return returnedTeam;
+        }
+        @Override
+        protected void onPostExecute(Team _team) {
+            progressDialog.dismiss();
+            getCallback.done(_team);
+            super.onPostExecute(_team);
         }
     }
 }
