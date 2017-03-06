@@ -2,14 +2,32 @@ package com.example.johnkaehler.pacificfantasysports;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
-public class ViewManualDraft extends AppCompatActivity {
-    //TODO: create view that gives users two options: Manually select order of draft, or app randomly assigns order
+public class ViewManualDraft extends AppCompatActivity implements View.OnClickListener{
+
+    Button bRandomDraftOrder, bAssignedDraftOrder;
+    TextView tvGoBack;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_manual_draft);
+
+        bRandomDraftOrder = (Button)findViewById(R.id.RandomDraftOrder);
+        bAssignedDraftOrder = (Button)findViewById(R.id.AssignedDraftOrder);
+        tvGoBack = (TextView)findViewById(R.id.tvGoBack);
+
+        bRandomDraftOrder.setOnClickListener(this);
+        bAssignedDraftOrder.setOnClickListener(this);
+        tvGoBack.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
 
     }
 
