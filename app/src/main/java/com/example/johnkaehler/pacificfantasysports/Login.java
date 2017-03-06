@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,6 +29,8 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {//savedInstanceState is the state of the program. Bundles enable data transfer b/w activities
         super.onCreate(savedInstanceState);//gives savedInstanceState to superclass
         setContentView(R.layout.activity_login);//sets activity content from resource layout - activity_login.
+
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         etEmail = (EditText) findViewById(R.id.etEmail);//returns view specified by etUsername casts to type EditText
         etPassword = (EditText) findViewById(R.id.etPassword);//returns view specified by etPassword, casts to type EditText
@@ -56,7 +59,6 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
                 break;
         }
     }
-    //some comment++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     private void authenticate(User user){//method to verify user
         ServerRequests serverRequests = new ServerRequests(this);//creates new ServerRequest with context 'this'

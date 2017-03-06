@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:background="@drawable/background">
+    <LinearLayout
+        android:layout_width="355dp"
+        android:id="@+id/blackOverlay"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:paddingTop="100dp"
+        android:background="#cc000000">
+
+        <LinearLayout
+            android:id="@+id/Content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:id="@+id/Banner"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <ImageView
+                    android:layout_width="76dp"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/gaelish"
+                    android:id="@+id/imageView"
+                    android:layout_gravity="left"
+                    android:layout_weight="0.04" />
+
+                <TextView
+                    android:text="Gaelish Guinn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textView"
+                    android:textColor="#FFFFFF"
+                    android:gravity="fill_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="30sp"
+                    android:textStyle="normal|bold"
+                    android:textAllCaps="false"
+                    android:fontFamily="sans-serif" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:id="@+id/biocontent"
+                android:layout_height="300dp">
+
+
+                <TextView
+                    android:text="Bio"
+                    android:textColor="@android:color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvBioHeader"
+                    android:textStyle="normal|bold"
+                    android:textSize="30sp" />
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:text="2016 (Sophomore)
+Scored 18 goals in 33 games for the Tigers, with three multi-goal games and one hat trick.  Recorded her second career hat trick against No. 21 Cal Baptist (Apr. 2). Scored two goals against No. 4 California (Jan. 16) and No. 23 Marist (Mar. 19). Added two assists, one against No. 21 Cal Baptist (Apr. 2) and one against No. 23 Cal Baptist (Apr. 30) in the GCC Semifinals. Drew 28 exclusions on offense and added 13 steals defensively.
+
+Through two seasons has 28 career goals, 21 scoring games, five multi-goal games and two hat tricks.
+
+2015 (Freshman)
+Guinn scored 10 goals in 23 games as a freshman, including a pair of multi-goal games. She posted a career-best three goals with a hat trick against Cal State Monterey Bay (Jan. 18), and hit the back of the cage twice in the Tigers' Golden Coast Conference quarterfinal win over Fresno Pacific (Apr. 23). Also picked up goals against No. 11 UC San Diego (Feb. 15), No. 10 Princeton (Mar. 14), No. 16 Indiana (Mar. 14), Santa Clara (Mar. 28), and Fresno Pacific (Apr. 11). Added one assist and three steals on the year.
+
+High School
+Guinn, a utility player, joined the Tigers from Rocklin High School in Rocklin, Calif. With Rocklin, she scored 355 goals in three seasons on varsity, and was a First Team All-Sierra Foothill League selection as a sophomore, junior and senior. She also earned All San Joaquin Section First Team honors as a senior and was the unanimous winner of the Foothill League Most Valuable Player Award after racking up 138 goals and 58 assists to lead her team to a SFL Championship.
+
+At the club level, Guinn has played the past five years with Sacramento Water Polo, winning the Under-16 Junior Olympic Regional Championship in 2012. She also has Olympic Development Program experience with the regional A team, and Cadet National Team."
+                            android:layout_width="match_parent"
+                            android:textColor="@android:color/white"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvBio" />
+                    </LinearLayout>
+                </ScrollView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

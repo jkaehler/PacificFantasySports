@@ -17,4 +17,8 @@ public class Team {
         teamName = _teamName;
         athleteList = _athleteList;
     }
+
+    public Team(){
+
+    }
 }

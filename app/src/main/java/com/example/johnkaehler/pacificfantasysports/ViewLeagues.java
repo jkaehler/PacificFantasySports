@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
@@ -32,7 +33,7 @@ public class ViewLeagues extends AppCompatActivity implements View.OnClickListen
         ServerRequests serverRequests = new ServerRequests(this);
         serverRequests.getLeagueDataInBackground(email, new GetListOfLeaguesCallback() {
             @Override
-            public void done(List<String> listOfLeagues) {
+            public void done(List<LeagueEmailNameJoin> listOfLeagues) {
                 if (listOfLeagues == null) {
                     //Show error message
                 } else {
@@ -45,54 +46,43 @@ public class ViewLeagues extends AppCompatActivity implements View.OnClickListen
         goBack.setOnClickListener(this);
     }
 
-    private void dynamicallyAddLeagueButtons(List<String> listOfLeagues) {
+    private void dynamicallyAddLeagueButtons(final List<LeagueEmailNameJoin> listOfLeagues) {
 
         int listSize = listOfLeagues.size();
 
-        //dynamically add buttons to view
         final LinearLayout lm = (LinearLayout) findViewById(R.id.InnerLayout);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        // create the layout params that will be used to define how your
-        // button will be displayed
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(GridLayout.LayoutParams.MATCH_PARENT, GridLayout.LayoutParams.WRAP_CONTENT);
-
-        //Create four
         for(int j=0;j<listSize;j++)
         {
-            // Create LinearLayout
             LinearLayout ll = new LinearLayout(this);
-            ll.setOrientation(LinearLayout.HORIZONTAL);
+            ll.setOrientation(LinearLayout.VERTICAL);
 
-            // Create Button
             final Button btn = new Button(this);
-            btn.setWidth(200);
-            // Give button an ID
-            btn.setId(j+1);
-            btn.setText(listOfLeagues.get(j));
-            // set the layoutParams on the button
+            final String leagueName = listOfLeagues.get(j).getLeagueName();
+            final String commishEmail = listOfLeagues.get(j).getCommishEmail();
+            btn.setId(j + 1);
+            btn.setText(leagueName);
             btn.setLayoutParams(params);
 
-            // Set click listener for button
             btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    Intent i = new Intent(getBaseContext(), LeagueActivity.class);
+                    i.putExtra("Commissioner Email", commishEmail);
+                    startActivity(i);
                 }
             });
 
-            //Add button to LinearLayout
             ll.addView(btn);
-            //Add button to LinearLayout defined in XML
             lm.addView(ll);
         }
-    }
-
-    private void createButtonObjects() {
-        return;
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-
+            case R.id.tvGoBack:
+                startActivity(new Intent(this, MainActivity.class));
         }
     }
 }

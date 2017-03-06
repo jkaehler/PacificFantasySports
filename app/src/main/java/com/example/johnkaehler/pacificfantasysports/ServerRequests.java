@@ -36,6 +36,7 @@ public class ServerRequests extends Activity{
 
     public static final int CONNECTION_TIMEOUT = 1000 * 15;//how long it will take for connection to timeout
     public static final String SERVER_ADDRESS = "http://10.0.2.2/PFS_PHP/";//sending data to local hosted server
+    //public static final String SERVER_ADDRESS = "https://ec2-54-214-108-23.us-west-2.compute.amazonaws.com/PFS_PHP/";
 
     public ServerRequests(Context context){//constructor
         progressDialog = new ProgressDialog(context);

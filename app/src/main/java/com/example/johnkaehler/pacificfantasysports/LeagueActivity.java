@@ -26,9 +26,7 @@ public class LeagueActivity extends AppCompatActivity implements View.OnClickLis
 
         Bundle b = getIntent().getExtras();
         commishEmail = "";
-        if(b != null){
-            commishEmail = b.getString("Commissioner Email");
-        }
+        if(b != null) commishEmail = b.getString("Commissioner Email");
 
         UserLocalStore userLocalStore = new UserLocalStore(this);
         userEmail = userLocalStore.getLoggedInUser().email;
@@ -36,16 +34,11 @@ public class LeagueActivity extends AppCompatActivity implements View.OnClickLis
         leagueHasDrafted = true;
         userIsCommissioner = (userEmail.equals(commishEmail));
 
-        //setViewUndraftedCommissioner();
-
         final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.OuterLayout);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(GridLayout.LayoutParams.MATCH_PARENT, GridLayout.LayoutParams.WRAP_CONTENT);
         LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(GridLayout.LayoutParams.WRAP_CONTENT, GridLayout.LayoutParams.WRAP_CONTENT);
         buttonParams.gravity = Gravity.CENTER;
 
         createButtons(linearLayout, leagueHasDrafted, userIsCommissioner);
-
-
     }
 
     private void createButtons(LinearLayout _linearLayout, boolean _leagueHasDrafted, boolean _userIsCommissioner) {
@@ -82,34 +75,40 @@ public class LeagueActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        Button b = (Button)v;
-        String btnText = b.getText().toString();
-        switch (btnText) {
-            case "View My Teams":
-                Intent i = new Intent(getBaseContext(), ViewTeam.class);
-                i.putExtra("Commissioner Email", commishEmail);
-                startActivity(i);
-                break;
-            case "View Standings":
-                Intent i2 = new Intent(getBaseContext(), ViewStandings.class);
-                i2.putExtra("Commissioner Email", commishEmail);
-                startActivity(i2);
-                break;
-            case "Show All Teams":
-                Intent i3 = new Intent(getBaseContext(), ViewShowAllTeams.class);
-                i3.putExtra("Commissioner Email", commishEmail);
-                startActivity(i3);
-                break;
-            case "View Matchups":
-                Intent i4 = new Intent(getBaseContext(), ViewShowMatchups.class);
-                i4.putExtra("Commissioner Email", commishEmail);
-                startActivity(i4);
-                break;
-            case "Manage League":
-                Intent i5 = new Intent(getBaseContext(), ViewManageLeague.class);
-                i5.putExtra("Commissioner Email", commishEmail);
-                startActivity(i5);
-                break;
+        if(v.getId() == R.id.tvGoBack){
+            Intent intent = new Intent(getBaseContext(), ViewLeagues.class);
+            startActivity(intent);
+        }
+        else{
+            Button b = (Button)v;
+            String btnText = b.getText().toString();
+            switch (btnText) {
+                case "View My Teams":
+                    Intent i = new Intent(getBaseContext(), ViewTeam.class);
+                    i.putExtra("Commissioner Email", commishEmail);
+                    startActivity(i);
+                    break;
+                case "View Standings":
+                    Intent i2 = new Intent(getBaseContext(), ViewStandings.class);
+                    i2.putExtra("Commissioner Email", commishEmail);
+                    startActivity(i2);
+                    break;
+                case "Show All Teams":
+                    Intent i3 = new Intent(getBaseContext(), ViewShowAllTeams.class);
+                    i3.putExtra("Commissioner Email", commishEmail);
+                    startActivity(i3);
+                    break;
+                case "View Matchups":
+                    Intent i4 = new Intent(getBaseContext(), ViewShowMatchups.class);
+                    i4.putExtra("Commissioner Email", commishEmail);
+                    startActivity(i4);
+                    break;
+                case "Manage League":
+                    Intent i5 = new Intent(getBaseContext(), ViewManageLeague.class);
+                    i5.putExtra("Commissioner Email", commishEmail);
+                    startActivity(i5);
+                    break;
+            }
         }
     }
 }

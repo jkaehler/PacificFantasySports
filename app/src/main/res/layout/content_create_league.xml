@@ -1,64 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_height="match_parent"
+    android:layout_width="match_parent"
     android:padding="10dp"
-    android:layout_width="match_parent">
+    android:background="@drawable/background">
 
-
-
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+    <LinearLayout
+        android:layout_width="355dp"
+        android:id="@+id/blackOverlay"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:paddingTop="100dp"
+        android:background="#cc000000">
 
         <LinearLayout
+            android:id="@+id/FormContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="League Name"
-                android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp">
 
             <EditText
                 android:id="@+id/etLeagueName"
+                android:hint="League Name"
+                android:inputType="text"
                 android:layout_width="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="Create a password"
-                android:layout_height="wrap_content" />
+                android:layout_marginBottom="20dp"
+                android:layout_height="50dp"
+                android:paddingLeft="10dp"
+                android:background="#ccffffff"/>
 
             <EditText
-                android:id="@+id/etLeaguePassword"
-                android:layout_width="match_parent"
+                android:id="@+id/etPassword"
+                android:hint="Enter password"
                 android:inputType="textPassword"
-                android:layout_marginBottom="10dp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="Re-type Password"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_marginBottom="20dp"
+                android:layout_height="50dp"
+                android:paddingLeft="10dp"
+                android:background="#ccffffff"/>
 
             <EditText
-                android:id="@+id/etReTypeLeaguePassword"
-                android:layout_width="match_parent"
+                android:id="@+id/etRetypePassword"
+                android:hint="Re-type password"
                 android:inputType="textPassword"
-                android:layout_marginBottom="10dp"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_marginBottom="20dp"
+                android:layout_height="50dp"
+                android:paddingLeft="10dp"
+                android:background="#ccffffff"/>
 
             <Button
                 android:id="@+id/bCreateLeague"
                 android:text="Create League"
-                android:layout_width="match_parent"
                 android:layout_marginBottom="10dp"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ccffffff"/>
 
             <TextView
                 android:id="@+id/tvGoBack"
@@ -66,9 +67,10 @@
                 android:text="Go Back"
                 android:textStyle="bold"
                 android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"/>
 
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
 </LinearLayout>
